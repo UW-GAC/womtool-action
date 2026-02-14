@@ -8,6 +8,10 @@ inputs:
     description: "The version of womtool to use."
     required: false
     default: "87"
+  java-version:
+    description: "The version of Java to use."
+    required: false
+    default: "11"
 
 runs:
   using: "composite"
@@ -19,7 +23,7 @@ runs:
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 11
+          java-version: ${{ inputs.java-version }}
 
       # Get cromwell jar file
       - uses: robinraju/release-downloader@v1.10
