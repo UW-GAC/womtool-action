@@ -4,7 +4,14 @@ inputs:
   wdl-file:
     description: "The WDL file to check."
     required: true
-
+  womtool-version:
+    description: "The version of womtool to use."
+    required: false
+    default: "87"
+  java-version:
+    description: "The version of Java to use."
+    required: false
+    default: "11"
 
 runs:
   using: "composite"
@@ -16,15 +23,15 @@ runs:
         uses: actions/setup-java@v3
         with:
           distribution: temurin
-          java-version: 11
+          java-version: ${{ inputs.java-version }}
 
       # Get cromwell jar file
       - uses: robinraju/release-downloader@v1.10
         with:
           repository: 'broadinstitute/cromwell'
-          tag: '87'
-          fileName: 'womtool-87.jar'
+          tag: '${{ inputs.womtool-version }}'
+          fileName: 'womtool-${{ inputs.womtool-version }}.jar'
 
       - name: Run womtool
-        run: java -jar womtool-87.jar validate ${{ inputs.wdl-file }}
+        run: java -jar womtool-${{ inputs.womtool-version }}.jar validate ${{ inputs.wdl-file }}
         shell: bash
