@@ -4,7 +4,10 @@ inputs:
   wdl-file:
     description: "The WDL file to check."
     required: true
-
+  womtool-version:
+    description: "The version of womtool to use."
+    required: false
+    default: "87"
 
 runs:
   using: "composite"
@@ -22,9 +25,9 @@ runs:
       - uses: robinraju/release-downloader@v1.10
         with:
           repository: 'broadinstitute/cromwell'
-          tag: '87'
-          fileName: 'womtool-87.jar'
+          tag: '${{ inputs.womtool-version }}'
+          fileName: 'womtool-${{ inputs.womtool-version }}.jar'
 
       - name: Run womtool
-        run: java -jar womtool-87.jar validate ${{ inputs.wdl-file }}
+        run: java -jar womtool-${{ inputs.womtool-version }}.jar validate ${{ inputs.wdl-file }}
         shell: bash
